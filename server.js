@@ -1,12 +1,12 @@
 const path = require('path');
 const express = require('express');
-const routes = require('./controllers/');
-const sequelize = require('./config/connection');
+const sequelize = require('./config/connections');
 const exphbs = require('express-handlebars');
-const helpers = require('./utils/helpers');
-const hbs = exphbs.create({ helpers });
+//const helpers = require('./utils/helpers');
+//const hbs = exphbs.create({ helpers });
 
 const session = require('express-session');
+const router = require('./controllers/api/index');
 
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
@@ -32,7 +32,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session(sess));
 
 // turn on routes
-app.use(routes);
+app.use(router);
+app.use(require('./controllers/dashboard-routes'));
+app.use(require('./controllers/home-routes'))
 
 // turn on connection to db and server
 sequelize.sync({ force: false }).then(() => {
