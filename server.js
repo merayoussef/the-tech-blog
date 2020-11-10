@@ -1,14 +1,15 @@
 const path = require('path');
 const express = require('express');
+const routes = require('./controllers/api/index');
 const sequelize = require('./config/connections');
 const exphbs = require('express-handlebars');
-//const helpers = require('./utils/helpers');
-//const hbs = exphbs.create({ helpers });
+const helpers = require('./utils/helpers');
+const hbs = exphbs.create({ helpers });
 
 const session = require('express-session');
-const router = require('./controllers/api/index');
 
-const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const SequelizeStore = require("connect-session-sequelize")(session.Store);
+
 
 const sess = {
     secret: 'Super secret secret',
@@ -19,6 +20,7 @@ const sess = {
         db: sequelize
     })
 };
+
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -32,7 +34,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session(sess));
 
 // turn on routes
-app.use(router);
+app.use(routes);
 app.use(require('./controllers/dashboard-routes'));
 app.use(require('./controllers/home-routes'))
 

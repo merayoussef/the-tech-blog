@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const sequelize = require('../config/connection');
+const sequelize = require('../config/connections');
 
 router.get('/', (req, res) => {
     console.log(req.session);
