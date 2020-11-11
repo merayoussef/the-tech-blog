@@ -8,19 +8,6 @@ const hbs = exphbs.create({ helpers });
 
 const session = require('express-session');
 
-const SequelizeStore = require("connect-session-sequelize")(session.Store);
-
-
-const sess = {
-    secret: 'Super secret secret',
-    cookie: {},
-    resave: false,
-    saveUninitialized: true,
-    store: new SequelizeStore({
-        db: sequelize
-    })
-};
-
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -31,7 +18,13 @@ app.set('view engine', 'handlebars');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session(sess));
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false,
+    // cookie: { secure: true }
+}));
+
 
 // turn on routes
 app.use(routes);
